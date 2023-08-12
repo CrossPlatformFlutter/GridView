@@ -67,7 +67,7 @@ final _cars = cars;
                         });
 
                         if(result!=-1){
-                          ScaffoldMessenger.of(context).showSnackBar(
+                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(content: Text("Remove ${_cars[index].brand}"))
                           );
                             setState(() {
