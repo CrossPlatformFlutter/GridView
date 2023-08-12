@@ -10,8 +10,8 @@ class TestGridView extends StatelessWidget{
   const TestGridView({super.key});
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: AppGrid(),
+    return const MaterialApp(
+      home:  AppGrid(),
     );
   }
 }
@@ -28,12 +28,52 @@ class _AppGrid extends State<AppGrid>{
 final _cars = cars;
 
            Future<void> deletecars(int index)async{
-                         await showDialog(barrierDismissible: false,context: context, builder: (context){
+                        int result= await showDialog(barrierDismissible: false,context: context, builder: (context){
                             return  SimpleDialog(
                                 title: Text("Do You Want Delete ${_cars[index].brand}"),
+                                children: [
+                                 Container(
+                                   child: Row(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                         SimpleDialogOption(
+                                           child:const Row(
+                                             children: [
+                                               Text("Confirm"),
+                                               Icon(Icons.airplane_ticket)
+                                             ],
+                                           ),
+                                           onPressed: (){
+                                              Navigator.pop(context,index);
+                                           },
+                                         ),
+                                          SimpleDialogOption(
+                                           child:const Row(
+                                             children: [
+                                               Text("Cancel"),
+                                               Icon(Icons.restore_outlined)
+                                             ],
+                                           ),
+                                           onPressed: (){
+                                             Navigator.pop(context,-1);
+                                           },
+                                         )
+                                      ],
+                                   ),
+                                )
+                                ],
                                 
                             );
                         });
+
+                        if(result!=-1){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text("Remove ${_cars[index].brand}"))
+                          );
+                            setState(() {
+                            _cars.remove(_cars[result]);
+                          });
+                        }
                     }
   @override
   Widget build(BuildContext context) {
